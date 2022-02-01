@@ -1,0 +1,165 @@
+<html>
+  <head>
+    <title>Speech to Text</title>
+    <style>
+      .flex-column {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 5px;
+      }
+      .border {
+        border: 1px solid black;
+      }
+      .column-item:nth-of-type(-n + 3) {
+        grid-column: span 1;
+      }
+
+      .center-item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .margin-10 {
+        margin-top: 10px;
+      }
+      .full-width {
+        width: 90%;
+        margin: 0 5%;
+      }
+      .left-25 {
+        margin: 0;
+        position: absolute;
+        left: 25%;
+      }
+      .padding-20 {
+        padding: 20px;
+      }
+      .margin-top-10 {
+        margin-top: 10px;
+      }
+      textarea {
+        resize: none;
+      }
+      textarea.ta10em {
+        height: 10em;
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">Speech to Text</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" href="/"
+              >Home <span class="sr-only">(current)</span></a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/myUploads">My Uploads</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/api/logout">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="flex-column">
+      <div class="border">
+        <div>
+          <div id="video_wrapper" class="video_wrapper">
+            <video
+              muted
+              id="preview_video"
+              class="preview_video"
+              width="852"
+              height="480"
+              autoplay
+            ></video>
+          </div>
+          <div id="status" class="error"></div>
+          <div id="result_text" class="text_area"></div>
+          <button onclick="stop_Click()" class="left-25 margin-top-10">
+            STOP PREVIEW
+          </button>
+        </div>
+      </div>
+      <div class="border padding-20">
+        <video id="recording_video" width="852" height="480" controls></video>
+        <button
+          id="record_btn"
+          class="margin-top-10"
+          onclick="startRecord_Click()"
+        >
+          START RECORD
+        </button>
+        <button
+          id="download_btn"
+          disabled
+          class="margin-top-10"
+          onClick="download_Click()"
+        >
+          DOWNLOAD
+        </button>
+      </div>
+    </div>
+    <div class="margin-top-10">
+      <h3 class="center-item">Transcribed Text</h3>
+      <textarea id="result_log" class="ta10em full-width"></textarea>
+    </div>
+    <div class="center-item margin-10 border">
+      <form action="/api/upload" method="post" enctype="multipart/form-data">
+        <h3 class="center-item">Other Options</h3>
+
+        <div>
+          <label for="file">Select Video File:</label>
+          <input
+            type="file"
+            name="mVideo"
+            accept="video/mp4, video/mp4"
+            required
+          />
+        </div>
+        <div>
+          <label for="file">Select Transcription File:</label>
+          <input type="file" name="mVtt" accept="text/vtt" required />
+        </div>
+
+        <input type="submit" class="center-item" value="Upload" />
+      </form>
+    </div>
+    <script src="/main.js" defer></script>
+  </body>
+</html>
